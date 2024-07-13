@@ -1,0 +1,2 @@
+# line_search
+シャインパスLINEの条件検索用のUIを保存している
