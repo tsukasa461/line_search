@@ -1,9 +1,22 @@
 import React, { useState } from 'react';
 import { Container, Typography, Box, Select, MenuItem, FormControl, InputLabel, TextField, Button, Grid, Slider } from '@mui/material';
 import prefectures from './Prefecture';
+import liff from '@line/liff';
 
 
 const SearchForm = () => {
+  /*useEffect(() => {
+    const initializeLiff = async () => {
+      try {
+        await liff.init({ liffId: '2005806957-qwJxnNGN' });
+      } catch (err) {
+        console.log('LIFF initialization failed', err);
+      }
+    };
+
+    initializeLiff();
+  }, []);
+*/
   const [selectedPrefecture, setSelectedPrefecture] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
   const [priceRange, setPriceRange] = useState([5000, 10000]);
@@ -45,6 +58,12 @@ const SearchForm = () => {
       startDate,
       endDate,
     });
+    // LIFFアプリを閉じる
+  if (liff.isInClient()) {
+    liff.closeWindow();
+  } else {
+    console.log('This is not running in LIFF browser');
+  }
   };
 
   const getCities = (prefecture) => {
