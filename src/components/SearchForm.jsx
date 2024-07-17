@@ -52,6 +52,7 @@ const SearchForm = () => {
     e.preventDefault();
     // 検索ロジックをここに追加
     const sendData = {
+      action: 'search',
       prefecture: selectedPrefecture,
       city: selectedCity,
       minPrice: priceRange[0],
