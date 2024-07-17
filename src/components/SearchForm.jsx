@@ -51,7 +51,15 @@ const SearchForm = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     // 検索ロジックをここに追加
-    const sendData = [selectedPrefecture, selectedCity, priceRange[0], priceRange[1], keyword, startDate, endDate];
+    const sendData = {
+      prefecture: selectedPrefecture,
+      city: selectedCity,
+      minPrice: priceRange[0],
+      maxPrice: priceRange[1],
+      keyword: keyword,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString()
+    };
     try {
       await axios.post('https://script.google.com/macros/s/AKfycbxnbK6ALmBsXU2aj24ef2rDivvrpwNdoS9rifdEBtgSXgW6vy4VEzxyoB9jTn7b8w/exec', sendData);
     } catch (error) {
