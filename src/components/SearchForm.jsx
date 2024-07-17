@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Container, Typography, Box, Select, MenuItem, FormControl, InputLabel, TextField, Button, Grid, Slider } from '@mui/material';
 import prefectures from './Prefecture';
 import liff from '@line/liff';
-
+import axios from 'axios';
 
 const SearchForm = () => {
-  /*useEffect(() => {
+  useEffect(() => {
     const initializeLiff = async () => {
       try {
         await liff.init({ liffId: '2005806957-qwJxnNGN' });
@@ -16,13 +16,15 @@ const SearchForm = () => {
 
     initializeLiff();
   }, []);
-*/
+
   const [selectedPrefecture, setSelectedPrefecture] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
   const [priceRange, setPriceRange] = useState([5000, 10000]);
   const [keyword, setKeyword] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date()); // 初期値を startDate と同じに設定
+
+  
 
   const handleStartDateChange = (event) => {
     const newStartDate = new Date(event.target.value);
@@ -46,24 +48,21 @@ const SearchForm = () => {
     setPriceRange(newValue);
   };
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
     // 検索ロジックをここに追加
-    console.log('検索条件:', {
-      selectedPrefecture,
-      selectedCity,
-      minPrice: priceRange[0],
-      maxPrice: priceRange[1],
-      keyword,
-      startDate,
-      endDate,
-    });
+    const sendData = [selectedPrefecture, selectedCity, priceRange[0], priceRange[1], keyword, startDate, endDate];
+    try {
+      await axios.post('https://script.google.com/macros/s/AKfycbxnbK6ALmBsXU2aj24ef2rDivvrpwNdoS9rifdEBtgSXgW6vy4VEzxyoB9jTn7b8w/exec', sendData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
     // LIFFアプリを閉じる
-  if (liff.isInClient()) {
-    liff.closeWindow();
-  } else {
-    console.log('This is not running in LIFF browser');
-  }
+    if (liff.isInClient()) {
+      liff.closeWindow();
+    } else {
+      console.log('This is not running in LIFF browser');
+    }
   };
 
   const getCities = (prefecture) => {
